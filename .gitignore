@@ -23,4 +23,4 @@
 !.env.example
 
 # Storage
-storage/mysql/data
+storage/postgres/data
