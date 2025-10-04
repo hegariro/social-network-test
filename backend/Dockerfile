@@ -68,7 +68,7 @@ COPY --from=builder --chown=appuser:appgroup /app/target/*.jar app.jar
 ENV JAVA_OPTS="-Xmx512m -Xms256m" \
     SPRING_PROFILES_ACTIVE=docker \
     SERVER_PORT=8081 \
-    LOGGING_LEVEL_ROOT=INFO \
+    LOGGING_LEVEL_ROOT=DEBUG \
     MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info,metrics
 
 # Exponer puerto
@@ -97,4 +97,3 @@ LABEL org.opencontainers.image.title="Social Network Backend Microservice"
 LABEL org.opencontainers.image.description="Microservicio de gestión backend"
 LABEL org.opencontainers.image.vendor="Periferia"
 LABEL org.opencontainers.image.version="1.0.0"
-
