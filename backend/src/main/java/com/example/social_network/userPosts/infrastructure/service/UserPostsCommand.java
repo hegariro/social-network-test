@@ -1,6 +1,5 @@
-package com.example.social_network.userPosts.application.ports;
+package com.example.social_network.userPosts.infrastructure.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 

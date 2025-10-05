@@ -42,4 +42,16 @@ public class JpaAuthRepositoryAdapter implements AuthRepository {
         UserEntity userEntity = jpaRepository.save(new UserEntity(uuid, nickname, name, passwd));
         return mapper.toDomain(userEntity);
     }
+
+    @Override
+    public Optional<String> findNicknameByUserId(String userId) {
+        Optional<UserEntity> dbResponse = jpaRepository.findById(userId);
+        return dbResponse.map(UserEntity::getNickname);
+    }
+
+    @Override
+    public Optional<String> findUserIdByNickname(String nickname) {
+        Optional<UserEntity> dbResponse = jpaRepository.findByNickname(nickname);
+        return dbResponse.map(UserEntity::getId);
+    }
 }

@@ -9,7 +9,7 @@ import com.example.social_network.api.v1.dto.ErrorResponse;
 import com.example.social_network.api.v1.dto.auth.RegistryRequest;
 import com.example.social_network.api.v1.dto.auth.UserLoginResponse;
 import com.example.social_network.api.v1.exception.BusinessException;
-import com.example.social_network.auth.application.ports.AuthCommand;
+import com.example.social_network.auth.infrastructure.services.AuthCommand;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -123,5 +123,13 @@ public class AuthController {
         }
 
         return ResponseEntity.status(201).body(authResponse.get());
+    }
+
+    final Optional<String> getNicknameByUserId(String userId) {
+        return authCommand.getNicknameByUserId(userId);
+    }
+
+    final Optional<String> getUserIdByNickname(String nickname) {
+        return authCommand.getUserIdByNickname(nickname);
     }
 }
