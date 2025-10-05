@@ -9,17 +9,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,7 +25,6 @@ import java.util.Optional;
     name = "Publicaciones de usuario",
     description = "Endpoints para la gestión de publicaciones creadas por los usuarios autenticados."
 )
-@SecurityRequirement(name = "bearerAuth")
 public class UserPostController {
     private final UserPostsCommand userPostsCommand;
 
@@ -95,5 +91,33 @@ public class UserPostController {
         }
 
         return ResponseEntity.status(201).body(userPostResponse.get());
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllPost() {
+        String nickname = getAuthenticatedUsername();
+        Optional<List<UserPostResponse>> response = userPostsCommand.getAllPostByNickname(nickname);
+        if (response.isEmpty()) {
+            throw new BusinessException(
+                "Los datos de usuario son incorrectos o no tiene publicaciones asociadas",
+                HttpStatus.UNPROCESSABLE_ENTITY
+            );
+        }
+
+        return ResponseEntity.status(200).body(response.get());
+    }
+
+    @GetMapping("/{idPost}")
+    public ResponseEntity<?> getPostById(@PathVariable String idPost) {
+        String nickname = getAuthenticatedUsername();
+        Optional<UserPostResponse> response = userPostsCommand.getPostByIdAndNickname(idPost, nickname);
+        if (response.isEmpty()) {
+            throw new BusinessException(
+                    "El id del post es incorrecto o no existe la publicación asociada",
+                    HttpStatus.UNPROCESSABLE_ENTITY
+            );
+        }
+
+        return ResponseEntity.status(200).body(response.get());
     }
 }

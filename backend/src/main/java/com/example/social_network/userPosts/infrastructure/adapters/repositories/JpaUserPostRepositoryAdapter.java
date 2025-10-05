@@ -8,6 +8,7 @@ import com.example.social_network.userPosts.infrastructure.persistance.entities.
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -25,5 +26,17 @@ public class JpaUserPostRepositoryAdapter implements UserPostRepository {
     public Optional<Post> newPost(String nickname, String title, String content) {
         PostEntity response = jpaRepository.save(new PostEntity(title, content, nickname));
         return mapper.toDomain(response);
+    }
+
+    @Override
+    public Optional<List<Post>> getPosts(String nickname) {
+        List<PostEntity> dbResponse = jpaRepository.getPostEntitiesByNickname(nickname);
+        return mapper.toDomain(dbResponse);
+    }
+
+    @Override
+    public Optional<Post> getPosts(String nickname, String id) {
+        PostEntity dbResponse = jpaRepository.getPostEntitiesByIdAndNickname(nickname, id);
+        return mapper.toDomain(dbResponse);
     }
 }
