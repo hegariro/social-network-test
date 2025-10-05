@@ -3,7 +3,7 @@
 # =========================================
 
 # Etapa 1: Build de la aplicación
-FROM maven:3.9.4-amazoncorretto-17 AS builder
+FROM maven:3.9.9-amazoncorretto-21 AS builder
 
 # Crear directorio de trabajo
 WORKDIR /app
@@ -36,24 +36,20 @@ FROM builder AS test-stage
 # =========================================
 # Etapa 3: Imagen runtime optimizada
 # =========================================
-FROM amazoncorretto:17-alpine-jdk AS runtime
+FROM maven:3.9.9-amazoncorretto-21 AS runtime
 
 # Instalar herramientas necesarias
-RUN apk add --no-cache \
-    curl \
-    tzdata \
-    && rm -rf /var/cache/apk/*
+RUN yum install -y curl tzdata && yum clean all
 
 # Configurar zona horaria
 ENV TZ=America/Bogota
 
 # Crear usuario no-root para seguridad
-RUN addgroup -g 1000 appgroup && \
-    adduser -u 1000 -G appgroup -s /bin/sh -D appuser
+RUN groupadd -g 1000 appgroup && \
+        useradd -u 1000 -g appgroup -m -s /bin/bash appuser
 
 # Crear directorios de trabajo
-RUN mkdir -p /app/logs /app/tmp && \
-    chown -R appuser:appgroup /app
+RUN mkdir -p /app/logs /app/tmp && chown -R appuser:appgroup /app
 
 # Cambiar al usuario no-root
 USER appuser
@@ -76,7 +72,7 @@ EXPOSE 8081
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8081/actuator/health || exit 1
+    CMD curl -f http://localhost:8081/api/actuator/health || exit 1
 
 # Configurar JVM para contenedores
 ENV JAVA_OPTS="$JAVA_OPTS \
@@ -96,4 +92,3 @@ ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
 LABEL org.opencontainers.image.title="Social Network Backend Microservice"
 LABEL org.opencontainers.image.description="Microservicio de gestión backend"
 LABEL org.opencontainers.image.vendor="Periferia"
-LABEL org.opencontainers.image.version="1.0.0"
