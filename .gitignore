@@ -22,5 +22,7 @@
 .env
 !.env.example
 
+.mvn
+
 # Storage
 storage/postgres/data

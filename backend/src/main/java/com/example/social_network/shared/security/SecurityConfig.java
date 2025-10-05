@@ -32,11 +32,16 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/v1/auth/**", 
-                    "/swagger-ui.html", 
-                    "/swagger-ui/**", 
-                    "/v3/api-docs/**",
-                    "/actuator/health"
+                    "/v1/auth/**",
+                    "/actuator/health",
+                    "/api/swagger-ui.html",
+                    "/api/swagger-ui/**",
+                    "/api/v3/api-docs",
+                    "/api/v3/api-docs/**",
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
@@ -50,7 +55,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Permite solicitudes desde el origen de tu máquina (donde está Swagger UI)
-        configuration.setAllowedOrigins(List.of("http://localhost:8080")); 
+        configuration.setAllowedOrigins(List.of("http://localhost:8081"));
         // Permite los métodos HTTP necesarios
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         // Permite todas las cabeceras, incluyendo la de Authorization
