@@ -4,10 +4,10 @@ package com.example.social_network.api.v1.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.social_network.api.v1.dto.CredentialsRequest;
+import com.example.social_network.api.v1.dto.auth.CredentialsRequest;
 import com.example.social_network.api.v1.dto.ErrorResponse;
-import com.example.social_network.api.v1.dto.RegistryRequest;
-import com.example.social_network.api.v1.dto.UserLoginResponse;
+import com.example.social_network.api.v1.dto.auth.RegistryRequest;
+import com.example.social_network.api.v1.dto.auth.UserLoginResponse;
 import com.example.social_network.api.v1.exception.BusinessException;
 import com.example.social_network.auth.application.ports.AuthCommand;
 

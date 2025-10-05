@@ -1,4 +1,4 @@
-package com.example.social_network.shared.persistence.entities;
+package com.example.social_network.auth.infrastructure.persistance.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,11 +18,17 @@ public class UserEntity {
     @Id
     @Column(length = 36)
     private String id;
+    @Column(nullable = false, unique = true)
     private String nickname;
     private String name;
     private String passwd;
 
-    public UserEntity(String id, String nickname, String name, String passwd) {
+    public UserEntity(
+        String id,
+        String nickname,
+        String name,
+        String passwd
+    ) {
         this.id = id;
         this.nickname = nickname;
         this.name = name;
