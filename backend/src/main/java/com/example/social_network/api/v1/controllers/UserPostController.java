@@ -3,7 +3,8 @@ package com.example.social_network.api.v1.controllers;
 import com.example.social_network.api.v1.dto.userPosts.UserPostRequest;
 import com.example.social_network.api.v1.dto.userPosts.UserPostResponse;
 import com.example.social_network.api.v1.exception.BusinessException;
-import com.example.social_network.userPosts.application.ports.UserPostsCommand;
+import com.example.social_network.shared.security.CustomUserDetails;
+import com.example.social_network.userPosts.infrastructure.service.UserPostsCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,11 +39,8 @@ public class UserPostController {
      * @throws BusinessException si no hay un usuario autenticado.
      */
     private String getAuthenticatedUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            throw new BusinessException("Usuario no autenticado", HttpStatus.FORBIDDEN);
-        }
-        return authentication.getName();
+        return ((CustomUserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getUsername();
     }
 
     /**

@@ -1,13 +1,11 @@
 package com.example.social_network.userPosts.infrastructure.adapters.repositories;
 
-import com.example.social_network.api.v1.dto.userPosts.UserPostResponse;
 import com.example.social_network.userPosts.domain.models.Post;
 import com.example.social_network.userPosts.domain.repositories.UserPostRepository;
 import com.example.social_network.userPosts.infrastructure.mappers.PostMapper;
 import com.example.social_network.userPosts.infrastructure.persistance.entities.PostEntity;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
