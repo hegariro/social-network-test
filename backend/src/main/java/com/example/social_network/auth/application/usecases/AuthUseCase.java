@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import com.example.social_network.auth.application.ports.AuthCommand;
+import com.example.social_network.auth.infrastructure.services.AuthCommand;
 import com.example.social_network.auth.domain.repositories.AuthRepository;
 import com.example.social_network.api.v1.dto.auth.UserLoginResponse;
 
@@ -27,5 +27,15 @@ public class AuthUseCase implements AuthCommand {
     public Optional<UserLoginResponse> registry(String nickname, String name, String password) {
         return authRepository.registry(nickname, name, password)
                 .map(res -> new UserLoginResponse(res.token(), res.nickname()));
+    }
+
+    @Override
+    public Optional<String> getNicknameByUserId(String userId) {
+        return authRepository.findNicknameByUserId(userId);
+    }
+
+    @Override
+    public Optional<String> getUserIdByNickname(String nickname) {
+        return authRepository.findUserIdByNickname(nickname);
     }
 }

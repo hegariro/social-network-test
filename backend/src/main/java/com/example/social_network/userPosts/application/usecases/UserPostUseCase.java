@@ -1,7 +1,7 @@
 package com.example.social_network.userPosts.application.usecases;
 
 import com.example.social_network.api.v1.dto.userPosts.UserPostResponse;
-import com.example.social_network.userPosts.application.ports.UserPostsCommand;
+import com.example.social_network.userPosts.infrastructure.service.UserPostsCommand;
 import com.example.social_network.userPosts.domain.models.Post;
 import com.example.social_network.userPosts.domain.repositories.UserPostRepository;
 import org.springframework.stereotype.Component;
