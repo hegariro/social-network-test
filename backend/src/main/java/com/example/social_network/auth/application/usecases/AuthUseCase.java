@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.social_network.auth.application.ports.AuthCommand;
 import com.example.social_network.auth.domain.repositories.AuthRepository;
-import com.example.social_network.api.v1.dto.UserLoginResponse;
+import com.example.social_network.api.v1.dto.auth.UserLoginResponse;
 
 @Component
 public class AuthUseCase implements AuthCommand {

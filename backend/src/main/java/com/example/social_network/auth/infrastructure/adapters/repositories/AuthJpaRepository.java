@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.social_network.shared.persistence.entities.UserEntity;
+import com.example.social_network.auth.infrastructure.persistance.entities.UserEntity;
 
 @Repository
 public interface AuthJpaRepository extends JpaRepository<UserEntity, String> {
