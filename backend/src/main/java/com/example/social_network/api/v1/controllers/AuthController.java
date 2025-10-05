@@ -10,7 +10,6 @@ import com.example.social_network.api.v1.dto.RegistryRequest;
 import com.example.social_network.api.v1.dto.UserLoginResponse;
 import com.example.social_network.api.v1.exception.BusinessException;
 import com.example.social_network.auth.application.ports.AuthCommand;
-import com.zaxxer.hikari.util.Credentials;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,7 +47,7 @@ public class AuthController {
         required = true,
         content = @Content(
             mediaType = "application/json",
-            schema = @Schema(implementation = Credentials.class)
+            schema = @Schema(implementation = CredentialsRequest.class)
         )
     )
     @ApiResponse(
@@ -86,6 +85,36 @@ public class AuthController {
         return ResponseEntity.status(401).body(response);
     }
 
+    // OpenAPI Docs
+    @Operation(
+            summary = "Registra a un usuario y genera un token JWT",
+            description = "Valida que el nickname no se encuentre registrado, si no está registrado, devuelve un token JWT para acceder a los recursos protegidos."
+    )
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Datos de usuario",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = RegistryRequest.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Autenticación exitosa",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = UserLoginResponse.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "422",
+            description = "La entidad no es procesable",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class)
+            )
+    )
+    @PostMapping("/registry")
     public ResponseEntity<?> registry(@RequestBody RegistryRequest payload) {
         Optional<UserLoginResponse> authResponse = authCommand
             .registry(payload.nickname(), payload.name(), payload.password());
@@ -93,6 +122,6 @@ public class AuthController {
             throw new BusinessException("Datos incorrectos", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        return ResponseEntity.ok().body(authResponse.get());
+        return ResponseEntity.status(201).body(authResponse.get());
     }
 }
