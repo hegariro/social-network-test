@@ -124,12 +124,4 @@ public class AuthController {
 
         return ResponseEntity.status(201).body(authResponse.get());
     }
-
-    final Optional<String> getNicknameByUserId(String userId) {
-        return authCommand.getNicknameByUserId(userId);
-    }
-
-    final Optional<String> getUserIdByNickname(String nickname) {
-        return authCommand.getUserIdByNickname(nickname);
-    }
 }

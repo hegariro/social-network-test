@@ -91,13 +91,26 @@ public class UserPostController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllPost() {
+    public ResponseEntity<?> getAllUserPost() {
         String nickname = getAuthenticatedUsername();
         Optional<List<UserPostResponse>> response = userPostsCommand.getAllPostByNickname(nickname);
         if (response.isEmpty()) {
             throw new BusinessException(
                 "Los datos de usuario son incorrectos o no tiene publicaciones asociadas",
                 HttpStatus.UNPROCESSABLE_ENTITY
+            );
+        }
+
+        return ResponseEntity.status(200).body(response.get());
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllPost() {
+        Optional<List<UserPostResponse>> response = userPostsCommand.getAllPost();
+        if (response.isEmpty()) {
+            throw new BusinessException(
+                    "No hay publicaciones en la base de datos",
+                    HttpStatus.NO_CONTENT
             );
         }
 
