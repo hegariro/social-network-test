@@ -33,6 +33,11 @@ public class UserPostUseCase implements UserPostsCommand {
     }
 
     @Override
+    public Optional<List<UserPostResponse>> getAllPost() {
+        return userPostRepository.getAllPosts().map(this::toEntityResponse);
+    }
+
+    @Override
     public Optional<UserPostResponse> getPostByIdAndNickname(String id, String nickname) {
         return userPostRepository.getPosts(nickname, id).map(res -> new UserPostResponse(
             res.id(),  res.nickname(), res.title(), res.content(), res.likes(), res.createdAt()

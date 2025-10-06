@@ -33,6 +33,12 @@ public class JpaUserPostRepositoryAdapter implements UserPostRepository {
     }
 
     @Override
+    public Optional<List<Post>> getAllPosts() {
+        List<PostEntity> dbResponse = jpaRepository.findAll();
+        return mapper.toDomain(dbResponse);
+    }
+
+    @Override
     public Optional<Post> getPosts(String nickname, String id) {
         PostEntity dbResponse = jpaRepository.getPostEntitiesByIdAndNickname(nickname, id);
         return mapper.toDomain(dbResponse);

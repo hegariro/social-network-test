@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface UserPostRepository {
     Optional<Post> newPost(String nickname, String title, String content);
+    Optional<List<Post>> getAllPosts();
     Optional<List<Post>> getPosts(String nickname);
     Optional<Post> getPosts(String nickname, String id);
 }

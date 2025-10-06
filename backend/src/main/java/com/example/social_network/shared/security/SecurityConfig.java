@@ -3,6 +3,7 @@ package com.example.social_network.shared.security;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
+
+    @Value("${app.cors.allowed-origins}")
+    private String allowedOrigins;
+
+    @Value("${app.cors.allowed-methods}")
+    private String allowedMethods;
+
+    @Value("${app.cors.allowed-headers}")
+    private String allowedHeaders;
+
+    @Value("${app.cors.allow-credentials}")
+    private boolean allowCredentials;
+
+    @Value("${app.cors.max-age}")
+    private long maxAge;
 
     public SecurityConfig(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
@@ -53,13 +69,16 @@ public class SecurityConfig {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        var allowedOriginsList = Arrays.asList(allowedOrigins.split(","));
+        var allowedMethodsList = Arrays.asList(allowedMethods.split(","));
+        var allowedHeadersList = Arrays.asList(allowedHeaders.split(","));
         CorsConfiguration configuration = new CorsConfiguration();
         // Permite solicitudes desde el origen de tu máquina (donde está Swagger UI)
-        configuration.setAllowedOrigins(List.of("http://localhost:8081"));
+        configuration.setAllowedOrigins(allowedOriginsList);
         // Permite los métodos HTTP necesarios
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(allowedMethodsList);
         // Permite todas las cabeceras, incluyendo la de Authorization
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(allowedHeadersList);
         // Permite el envío de credenciales (necesario para las cabeceras de autorización)
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
